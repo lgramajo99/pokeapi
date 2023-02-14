@@ -1,26 +1,26 @@
-const { Router } = require("express");
 
-const router = Router();
-
-router.getPokemonsById = async (req, res) => {
+const axios = require('axios');
+const getPokemonById = async (req, res) => {
     try {
-        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${req.params.idPokemon}`);
-        const pokemon = response.data;
-        const typeResponse = await axios.get(pokemon.types[0].type.url);
-        const type = typeResponse.data.name;
-        res.status(200).send({
-            name: pokemon.name,
-            height: pokemon.height,
-            weight: pokemon.weight,
-            type
-        });
+        const idPokemon = req.params.idPokemon;
+        console.log(idPokemon)
+
+        const pokemonResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon/${idPokemon}`);
+        const pokemon = pokemonResponse.data;
+
+        const pokemonTypeResponse = await axios.get(`https://pokeapi.co/api/v2/type/${pokemon.types[0].type.name}`);
+        const pokemonType = pokemonTypeResponse.data;
+
+        const responseData = {
+            pokemon: pokemon,
+            type: pokemonType
+        };
+
+        res.send(responseData);
     } catch (error) {
         console.error(error);
-        res.status(500).send({
-            message: 'Error al obtener el pokemon'
-        });
+        res.status(404).send({ error: `No se pudo obtener el pokemon con el id: ${req.params.idPokemon} ` });
     }
-}
+};
 
-module.exports = router;
-
+module.exports = getPokemonById 
