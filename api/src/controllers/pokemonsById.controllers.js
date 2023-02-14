@@ -1,9 +1,9 @@
 
 const axios = require('axios');
+
 const getPokemonById = async (req, res) => {
     try {
         const idPokemon = req.params.idPokemon;
-        console.log(idPokemon)
 
         const pokemonResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon/${idPokemon}`);
         const pokemon = pokemonResponse.data;
