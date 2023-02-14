@@ -1,14 +1,17 @@
-const { Router } = require("express");
+// const { Router } = require("express");
+const axios = require('axios');
 
-const router = Router();
+const pokemonController = {};
 
-router.get('/', async (req, res) => {
-    Pokemon.findAll()
-        .then(pokemons => res.json(pokemons))
-        .catch(error => {
-            console.error(error);
-            res.status(500).send('Ocurrió un error al obtener los Pokemones.');
-        });
-})
+pokemonController.getPokemons = async (req, res) => {
+    try {
+        const response = await axios.get('https://pokeapi.co/api/v2/pokemon')
+        res.send(response.data.results);
+        console.log(response.data.results);
 
-module.exports = router;
+    } catch (error) {
+        console.error(error);
+        res.send([]);
+    }
+}
+module.exports = pokemonController;
