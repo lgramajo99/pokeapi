@@ -1,0 +1,7 @@
+.divBienvenida {
+    border: 2px black solid;
+    width: 25rem;
+    height: 25rem;
+    right: auto;
+    background-color: rgb(255, 255, 255);
+}
