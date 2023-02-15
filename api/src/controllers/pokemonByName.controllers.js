@@ -1,50 +1,37 @@
 const axios = require('axios');
 const { Op } = require('sequelize');
-const { Pokemon } = require('../models/Pokemon.js');
+const { Pokemon, Tipo } = require('../db');
+const pokemonByName = {};
 
-const searchPokemonByName = async (req, res) => {
-    const name = req.query.name.trim().toLowerCase();
-    console.log(name)
-    const databasePokemon = await Pokemon.findAll({
-        where: {
-            nombre: {
-                [Op.iLike]: `%${name}%`
-            }
-        }
-    });
-
-    if (databasePokemon.length === 0) {
-        try {
-            const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name}`);
-            const pokeapi = {
-                id: response.data.id,
-                nombre: response.data.name,
-                imagen: response.data.sprites.front_default,
-                vida: response.data.stats[0].base_stat,
-                ataque: response.data.stats[1].base_stat,
-                defensa: response.data.stats[2].base_stat,
-                velocidad: response.data.stats[5].base_stat,
-                altura: response.data.height,
-                peso: response.data.weight
-            };
-            return res.json([pokeapi]);
-        } catch (error) {
-            return res.status(404).json({ message: 'No se encontró el Pokemon' });
-        }
-    } else {
-        const response = databasePokemon.map(pokemon => ({
-            id: pokemon.id,
-            nombre: pokemon.nombre,
-            imagen: pokemon.imagen,
-            vida: pokemon.vida,
-            ataque: pokemon.ataque,
-            defensa: pokemon.defensa,
-            velocidad: pokemon.velocidad,
-            altura: pokemon.altura,
-            peso: pokemon.peso
-        }));
-        return res.json(response);
+pokemonByName.searchPokemonByName = async (req, res) => {
+    const { name } = req.query;
+    try {
+        const dbPokemons = await Pokemon.findAll({
+            where: { nombre: { [Op.iLike]: `%${name}%` }, },
+            include: Tipo,
+        });
+        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${name.toLowerCase()}`);
+        const apiPokemon = response.data;
+        const apiPokemonInfo = {
+            id: apiPokemon.id,
+            nombre: apiPokemon.name,
+            imagen: apiPokemon.sprites.front_default,
+            vida: apiPokemon.stats[0].base_stat,
+            ataque: apiPokemon.stats[1].base_stat,
+            defensa: apiPokemon.stats[2].base_stat,
+            velocidad: apiPokemon.stats[5].base_stat,
+            altura: apiPokemon.height,
+            peso: apiPokemon.weight,
+            tipos: apiPokemon.types.map((type) => {
+                return { name: type.type.name };
+            }),
+        };
+        if (result.length === 0) return res.status(404).json({ message: 'No se encontró ningún pokemon.' });
+        res.json(result);
+    } catch (error) {
+        console.error(error);
+        res.status(404).send({ message: 'No se encontro ningun pokemon' });
     }
 };
 
-module.exports = searchPokemonByName;
+module.exports = pokemonByName;

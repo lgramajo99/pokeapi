@@ -11,9 +11,8 @@ module.exports = (sequelize) => {
       allowNull: false
     },
     nombre: {
-      type: DataTypes.STRING(25),
+      type: DataTypes.STRING,
       allowNull: false,
-      unique: true
     },
     imagen: {
       type: DataTypes.STRING,

@@ -1,26 +1,45 @@
-
 const axios = require('axios');
+const { Pokemon, Tipo } = require('../db');
+const { Op } = require('sequelize');
 
-const getPokemonById = async (req, res) => {
+const pokemonById = {};
+
+pokemonById.getPokemonById = async (req, res) => {
+    const { idPokemon } = req.params;
     try {
-        const idPokemon = req.params.idPokemon;
+        let pokemon = await Pokemon.findByPk(idPokemon, { include: Tipo, });
 
-        const pokemonResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon/${idPokemon}`);
-        const pokemon = pokemonResponse.data;
+        if (!pokemon) {
+            const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${idPokemon}`);
+            const apiPokemon = response.data;
+            const newPokemon = {
+                id: apiPokemon.id,
+                nombre: apiPokemon.name,
+                imagen: apiPokemon.sprites.front_default,
+                vida: apiPokemon.stats[0].base_stat,
+                ataque: apiPokemon.stats[1].base_stat,
+                defensa: apiPokemon.stats[2].base_stat,
+                velocidad: apiPokemon.stats[5].base_stat,
+                altura: apiPokemon.height,
+                peso: apiPokemon.weight,
+            };
 
-        const pokemonTypeResponse = await axios.get(`https://pokeapi.co/api/v2/type/${pokemon.types[0].type.name}`);
-        const pokemonType = pokemonTypeResponse.data;
+            const tipos = apiPokemon.types.map((tipo) => { return { name: tipo.type.name } });
 
-        const responseData = {
-            pokemon: pokemon,
-            type: pokemonType
-        };
+            pokemon = await Pokemon.create(newPokemon);
 
-        res.send(responseData);
+            await pokemon.addTipos(
+                await Tipo.findAll({
+                    where: { nombre: { [Op.or]: tipos.map((tipo) => tipo.nombre), } },
+                })
+            );
+            pokemon = await Pokemon.findByPk(idPokemon, { include: Tipo, });
+        }
+        res.json(pokemon);
     } catch (error) {
         console.error(error);
-        res.status(404).send({ error: `No se pudo obtener el pokemon con el id: ${req.params.idPokemon} ` });
+        res.status(500).send({ message: `No se encontro el pokemon con el id: ${idPokemon}` });
     }
 };
 
-module.exports = getPokemonById 
+module.exports = pokemonById;
