@@ -1,7 +1,7 @@
-function crearPokemon() {
+function CrearPokemon() {
     return (
         <h3>Crear pokemon</h3>
     )
 }
 
-export default crearPokemon;
+export default CrearPokemon;

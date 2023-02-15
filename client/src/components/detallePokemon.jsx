@@ -1,10 +1,10 @@
 
 
-function detallePokemon() {
+function DetallePokemon() {
     return (
         <h3>Detalle del pokemon</h3>
 
     )
 }
 
-export default detallePokemon;
+export default DetallePokemon;

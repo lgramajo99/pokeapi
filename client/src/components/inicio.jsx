@@ -1,7 +1,7 @@
-function inicio() {
+function Inicio() {
     return (
         <h3>Inicio</h3>
     )
 }
 
-export default inicio;
+export default Inicio;
