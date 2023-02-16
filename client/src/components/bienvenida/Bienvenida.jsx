@@ -1,5 +1,4 @@
 import style from './Bienvenida.module.css'
-import Inicio from '../Inicio';
 import { Link } from 'react-router-dom'
 
 function Bienvenida() {
