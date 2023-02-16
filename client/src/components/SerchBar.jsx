@@ -1,6 +1,9 @@
 function SerchBar() {
     return (
-        <h3>SerchBar</h3>
+        <form>
+            <input type="text" placeholder="Buscar" autoComplete="off" />
+            <button type="submit">Buscar</button>
+        </form>
     )
 }
 
