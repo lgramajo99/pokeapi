@@ -1,28 +1,31 @@
-.bodyNav {
-    /* display: flex; */
-}
-
 .imgNav {
     max-width: 100%;
-    height: 30%;
+    height: 30% !important;
 }
 
-.linkInicioNav {
-    color: black;
-    text-decoration: none;
-    font-size: 20px;
-
+.navPadre {
+    display: flex;
+    justify-content: space-between;
+    background-color: #6699CC;
+    padding: 1rem 100;
+    padding: 1rem;
 }
 
+.navlinks {
+    display: flex;
+}
+
+.imgIcon {
+    width: 2.5rem;
+    margin-left: 3rem;
+}
+
+.linkFaceNav,
+.linkInicioNav,
 .linkNosotrosNav {
     color: black;
     text-decoration: none;
     font-size: 20px;
-
-}
-
-.linkFaceNav {
-    color: black;
-    text-decoration: none;
-    font-size: 20px;
+    margin: 0 10px;
+    font: bolder !important;
 }

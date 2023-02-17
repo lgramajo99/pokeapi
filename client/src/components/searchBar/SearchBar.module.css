@@ -1,0 +1,26 @@
+.inputSearch {
+    border: none;
+    border-radius: 20px 0 0 20px;
+    background-color: #f2f2f2;
+    padding: 10px;
+}
+
+.botonSearch {
+    border: none;
+    border-radius: 0px 20px 20px 0px;
+    background-color: #0077c2;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.botonSearch:hover {
+    background-color: #0062a3;
+}
+
+.botonSearch:active {
+    transform: translateY(2px);
+    background-color: #004d85;
+}
