@@ -1,6 +1,9 @@
+import CardsList from './cardsList/CardsList'
 function Inicio() {
     return (
-        <h3>Inicio</h3>
+        <div>
+            <CardsList></CardsList>
+        </div>
     )
 }
 

@@ -6,6 +6,7 @@ import DetallePokemon from './components/DetallePokemon.jsx';
 import Inicio from './components/Inicio.jsx';
 import Bienvenida from './components/bienvenida/Bienvenida.jsx';
 import Nav from './components/nav/Nav'
+
 function App() {
 
   const location = useLocation();
