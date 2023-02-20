@@ -13,7 +13,7 @@ tipoController.getTipos = async (req, res) => {
         return res.json(tiposInDB);
     } catch (error) {
         console.error(error);
-        return res.status(500).send('Server error');
+        return res.status(500).send('Tipo no encontrado.');
     }
 };
 

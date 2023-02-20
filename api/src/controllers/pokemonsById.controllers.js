@@ -7,11 +7,12 @@ const pokemonById = {};
 pokemonById.getPokemonById = async (req, res) => {
     const { idPokemon } = req.params;
     try {
-        let pokemon = await Pokemon.findByPk(idPokemon, { include: Tipo, });
+        let pokemon = await Pokemon.findByPk(idPokemon, { include: Tipo });
 
         if (!pokemon) {
             const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${idPokemon}`);
             const apiPokemon = response.data;
+
             const newPokemon = {
                 id: apiPokemon.id,
                 nombre: apiPokemon.name,
@@ -23,22 +24,28 @@ pokemonById.getPokemonById = async (req, res) => {
                 altura: apiPokemon.height,
                 peso: apiPokemon.weight,
             };
-
-            const tipos = apiPokemon.types.map((tipo) => { return { name: tipo.type.name } });
+            const tipos = apiPokemon.types.map((tipo) => { return { nombre: tipo.type.name } });
+            const tiposEncontrados = await Tipo.findAll({ where: { nombre: { [Op.or]: tipos.map((tipo) => tipo.nombre), } } });
 
             pokemon = await Pokemon.create(newPokemon);
+            await pokemon.setTipos(tiposEncontrados);
 
-            await pokemon.addTipos(
-                await Tipo.findAll({
-                    where: { nombre: { [Op.or]: tipos.map((tipo) => tipo.nombre), } },
-                })
-            );
-            pokemon = await Pokemon.findByPk(idPokemon, { include: Tipo, });
+            for (let i = 0; i < tipos.length; i++) {
+                let tipo = tipos[i];
+                let tipoEncontrado = await Tipo.findOne({ where: { nombre: tipo.nombre } });
+                if (!tipoEncontrado) tipoEncontrado = await Tipo.create({ nombre: tipo.nombre });
+                await pokemon.addTipo(tipoEncontrado);
+            }
+
+            pokemon = await Pokemon.findByPk(pokemon.id, { include: Tipo });
         }
+
+        const tiposNombres = pokemon.tipos.map(tipo => tipo.nombre);
+        pokemon = { ...pokemon.toJSON(), tipos: tiposNombres };
         res.json(pokemon);
     } catch (error) {
         console.error(error);
-        res.status(500).send({ message: `No se encontro el pokemon con el id: ${idPokemon}` });
+        res.status(500).send({ message: `No se encontró el pokemon con el id: ${idPokemon}` });
     }
 };
 

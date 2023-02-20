@@ -22,15 +22,14 @@ pokemonByName.searchPokemonByName = async (req, res) => {
             velocidad: apiPokemon.stats[5].base_stat,
             altura: apiPokemon.height,
             peso: apiPokemon.weight,
-            tipos: apiPokemon.types.map((type) => {
-                return { name: type.type.name };
-            }),
         };
-        if (result.length === 0) return res.status(404).json({ message: 'No se encontró ningún pokemon.' });
-        res.json(result);
+        if (dbPokemons.length === 0 && !apiPokemonInfo.id) {
+            return res.status(404).json({ message: 'No se encontró ningún pokemon.' });
+        }
+        res.json([...dbPokemons, apiPokemonInfo]);
     } catch (error) {
         console.error(error);
-        res.status(404).send({ message: 'No se encontro ningun pokemon' });
+        res.status(404).send({ message: 'No se encontró ningún pokemon.' });
     }
 };
 
