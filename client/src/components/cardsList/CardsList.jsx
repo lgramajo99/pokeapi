@@ -6,21 +6,24 @@ function CardsList() {
     const [pokemons, setPokemons] = useState([]);
 
     useEffect(() => {
-        axios.get('/pokemons')
-            .then(response => {
-                setPokemons(response.data.results);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    }, []);
+        async function fetchData() {
+            const response = await axios.get('http://localhost:3001/pokemons');
+            setPokemons(response.data)
+        }
+        fetchData()
+    }, [])
 
     console.log(pokemons);
 
     return (
         <div>
-            {pokemons.map((pokemon, index) => (
-                <Card key={index} name={pokemon.name} url={pokemon.url} />
+            {pokemons.map((pokemon) => (
+                <Card
+                    key={pokemon.id}
+                    nombre={pokemon.nombre}
+                    imagen={pokemon.imagen}
+                    tipos={pokemon.tipos}
+                />
             ))}
         </div>
     );
