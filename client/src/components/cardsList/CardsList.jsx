@@ -1,4 +1,5 @@
 import Card from "../card/Card";
+import style from "../cardsList/CardsList.module.css"
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -16,10 +17,11 @@ function CardsList() {
     console.log(pokemons);
 
     return (
-        <div>
+        <div className={style.divPadre}>
             {pokemons.map((pokemon) => (
                 <Card
                     key={pokemon.id}
+                    id={pokemon.id}
                     nombre={pokemon.nombre}
                     imagen={pokemon.imagen}
                     tipos={pokemon.tipos}

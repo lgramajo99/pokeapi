@@ -3,7 +3,7 @@ import './App.css';
 import { Route, Routes, useLocation } from 'react-router-dom'
 import CrearPokemon from './components/CrearPokemon.jsx';
 import DetallePokemon from './components/DetallePokemon.jsx';
-import Inicio from './components/Inicio.jsx';
+import Inicio from './components/inicio/Inicio.jsx';
 import Bienvenida from './components/bienvenida/Bienvenida.jsx';
 import Nav from './components/nav/Nav'
 

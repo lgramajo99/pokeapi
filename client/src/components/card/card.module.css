@@ -1,0 +1,36 @@
+ .fav {
+     margin: 5px auto;
+     /* height: 30%; */
+     width: 30%;
+ }
+
+ .equipo {
+     margin: 5px auto;
+     /* height: 30%; */
+     width: 30%;
+ }
+
+ .cardPadre {
+     border: 1px solid black;
+     border-radius: 10%;
+     background: #1D976C;
+     background: -webkit-linear-gradient(to top, #93F9B9, #1D976C);
+     background: linear-gradient(to top, #93F9B9, #1D976C);
+     text-decoration: none !important;
+     transition: all 0.3s ease;
+
+ }
+
+ .cardPadre:active {
+     background: #1D976C;
+     background: -webkit-linear-gradient(to top, #1D976C, #93F9B9);
+     background: linear-gradient(to top, #1D976C, #93F9B9);
+     box-shadow: none;
+ }
+
+ .headCard {}
+
+ .linkCard {
+     text-decoration: none !important;
+     color: black;
+ }
