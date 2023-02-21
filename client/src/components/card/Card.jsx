@@ -1,5 +1,5 @@
 import style from '../card/Card.module.css';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 function Card({ nombre, imagen, tipos }) {
 
